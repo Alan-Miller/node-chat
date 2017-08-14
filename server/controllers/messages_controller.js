@@ -2,34 +2,36 @@ let messages = [];
 let id = 0;
 
 module.exports = {
-create: ( req, res ) => {
-  const { title, author } = req.body;
-  books.push( { id, title, author } );
-  id++;
-  res.status(200).send( books );
-},
-
-read: ( req, res ) => {
-  res.status(200).send( books );
-},
-
-update: ( req, res ) => {
-  const updateID = req.params.id;
-  let index = books.findIndex( book => book.id == updateID );
-
-  books[ index ] = {
-    id: books[ index ].id,
-    title: req.body.title || books[ index ].title,
-    author: req.body.author || books[ index ].author
-  };
-
-  res.status(200).send( books );
-},
-
-delete: ( req, res ) => {
-  const deleteID = req.params.id;
-  bookID = books.findIndex( book => book.id == deleteID );
-  books.splice( bookID, 1 );
-  res.status(200).send( books );
-}
+    create: (req, res) => {
+        const { text, time } = req.body;
+        messages.push( {id, text, time} );
+        id++;
+        res.status(200).send(messages); 
+    }
+    ,
+    read: (req, res) => {
+        res.status(200).send(messages);
+    }
+    ,
+    update: (req, res) => {
+        const { text } = req.body;
+        const updateId = req.params.id;
+        // for (var msg of messages) {
+        //     if (msg.id === id) msg.text = text;
+        // }
+        const msgIndex = messages.findIndex(msg => msg.id == updateId);
+        let message = messages[msgIndex];
+        messages[msgIndex] = {
+            id: message.id,
+            text: text || message.text,
+            time: message.time
+        };
+        res.status(200).send(messages);
+    }
+    ,
+    delete: (req, res) => {
+        const msgIndex = messages.findIndex(msg => msg.id == req.params.id);
+        messages.splice(msgIndex, 1);
+        res.status(200).send(messages);
+    }
 }
